@@ -46,7 +46,7 @@ def signup():
       # Adding user to database
       user = User(username=username, email=email, pwd=hashed_password)
       add_user(user)
-
+      print(get_users())
       return redirect(url_for('homepage'))
    return render_template('signup.html', title='Signup')
 
