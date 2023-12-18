@@ -32,36 +32,20 @@ def signup():
       email = request.form.get('email')
       password = request.form.get('password')
       hashed_password = bcrypt.generate_password_hash(password).decode('utf-8') 
-
-      #  Check if user already exists
       username_exist_check = username_exists(username)
+      if username_exist_check:
+         flash('Username exists already', 'danger')
+         print("Exists")
+         return redirect('signup')
       email_exist_check = email_exists(email)
-      if username_exist_check or email_exist_check:
-         if username_exist_check:
-            flash('Username exists already', 'danger')
-         if email_exist_check:
-            flash('Email exists already', category='danger')
-         return redirect(url_for('signup'))
-      
-      # Adding user to database
+      if email_exist_check:
+         flash('Email exists already', category='error')
       user = User(username=username, email=email, pwd=hashed_password)
       add_user(user)
-
+      print(get_users())
       return redirect(url_for('homepage'))
    return render_template('signup.html', title='Signup')
 
-# Login Route --------------------------------
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login")
 def login():
-
-   # Extracting form data
-   if request.method == 'POST':
-      email_data = request.form.get('email')
-      password_data = request.form.get('password')
-      user = email_exists(email_data)
-      if user and bcrypt.check_password_hash(user.pwd, password_data):
-         login_user(user)
-         return redirect(url_for('homepage'))
-      else:
-         flash('Login Unsuccessful. Check email and password', 'danger')
    return render_template('login.html', title='Login')
