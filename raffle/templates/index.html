@@ -19,15 +19,23 @@
                     <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">How to Play</a></li>
                 </ul>
-        
-                <div class="text-end">
-                    <a href="{{ url_for('login') }}">
-                        <button type="button" class="btn btn-outline-light me-2">Login</button>
-                    </a>
-                    <a href="{{ url_for('signup') }}">
-                        <button type="button" class="btn btn-warning">Sign-up</button>
-                    </a>
-                </div>
+
+                {% if current_user.is_authenticated %}
+                    <div class="text-end">
+                        <a href="{{ url_for('logout') }}">
+                            <button type="button" class="btn btn-outline-danger me-2">Logout</button>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="text-end">
+                        <a href="{{ url_for('login') }}">
+                            <button type="button" class="btn btn-outline-light me-2">Login</button>
+                        </a>
+                        <a href="{{ url_for('signup') }}">
+                            <button type="button" class="btn btn-warning">Sign-up</button>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </header>
